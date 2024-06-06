@@ -1,7 +1,7 @@
 altair<5
 streamlit
 typer
-llm_utils @ git+https://ai_web:xu3wm_hf-5pMMfzXtWaG@gitlab.rc.uab.edu/anes_ai/llm_apps/llm_utils.git@feature/interface2
+llm_utils @ git+https://github.com/UABPeriopAI/llm_utils.git@feature/generalize_interface
 openai
 langchain
 langchain-community
@@ -10,5 +10,6 @@ pyodbc
 tiktoken
 faiss-cpu
 python-docx 
+pypandoc
 st_pages
 docx

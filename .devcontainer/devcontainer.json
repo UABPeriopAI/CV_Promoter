@@ -1,0 +1,49 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.217.4/containers/python-3-miniconda
+{
+	"name": "Python Devel",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+		"args": { 
+			"PROJECT_NAME": "CV_Promoter",
+            "PYTHON": "3.10.5",
+            "USERNAME": "vscode",
+			"NODE_VERSION": "none"
+		}
+	},
+
+    "containerEnv": {
+        "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
+		"openai_api_key": "${localEnv:OPENAI_API_KEY}"
+    },
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"customizations":{
+		"vscode":{
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.pylint",
+				"teledemic.branch-warnings",
+				"mintlify.document",
+				"ms-azuretools.vscode-docker"
+			],
+			"settings": { 
+				"python.defaultInterpreterPath": "/usr/local/bin/python"
+			}
+		}
+	},
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": [
+		"Docker/startup.sh"
+	],
+				
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"git": "latest"
+	}
+}

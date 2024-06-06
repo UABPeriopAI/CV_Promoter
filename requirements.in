@@ -1,0 +1,14 @@
+altair<5
+streamlit
+typer
+llm_utils @ git+https://ai_web:xu3wm_hf-5pMMfzXtWaG@gitlab.rc.uab.edu/anes_ai/llm_apps/llm_utils.git@feature/interface2
+openai
+langchain
+langchain-community
+langchain-openai
+pyodbc
+tiktoken
+faiss-cpu
+python-docx 
+st_pages
+docx

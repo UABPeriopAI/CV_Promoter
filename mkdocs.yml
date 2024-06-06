@@ -1,0 +1,16 @@
+# mkdocs.yml
+site_name: CV Promoter Tool
+site_url: https://sites.uab.edu/periop-datascience/
+repo_url: https://github.com/UABPeriopAI/CV_Promoter
+nav:
+  - Home: index.md
+  - User Interface:
+    - Application: streamlit/CV_Promoter_app.md
+  - Backend:
+    - workflows: CV_Promoter/workflows.md
+    - parser: CV_Promoter/cv_parsing.md
+theme: readthedocs
+plugins:
+  - mkdocstrings
+watch:
+  - .  # reload docs for any file changes

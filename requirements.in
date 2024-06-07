@@ -1,0 +1,15 @@
+altair<5
+streamlit
+typer
+llm_utils @ git+https://github.com/UABPeriopAI/llm_utils.git@feature/generalize_interface
+openai
+langchain
+langchain-community
+langchain-openai
+pyodbc
+tiktoken
+faiss-cpu
+python-docx 
+pypandoc
+st_pages
+docx

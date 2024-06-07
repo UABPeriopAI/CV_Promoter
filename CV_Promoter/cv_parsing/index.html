@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://sites.uab.edu/periop-datascience/CV_Promoter/cv_parsing/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>parser - CV Promoter Tool</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "parser";
+        var mkdocs_page_input_path = "CV_Promoter/cv_parsing.md";
+        var mkdocs_page_url = "/periop-datascience/CV_Promoter/cv_parsing/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> CV Promoter Tool
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Interface</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../streamlit/CV_Promoter_app/">Application</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Backend</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workflows/">workflows</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">parser</a>
+    <ul class="current">
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">CV Promoter Tool</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Backend</li>
+      <li class="breadcrumb-item active">parser</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/UABPeriopAI/CV_Promoter/edit/master/docs/CV_Promoter/cv_parsing.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="CV_Promoter.cv_parsing"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="CV_Promoter.cv_parsing.CVParser" class="doc doc-heading">
+            <code>CVParser</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>The <code>CVParser</code> class in Python is designed to extract text from a CV document based on specified
+sections and date ranges.</p>
+
+              <details class="quote">
+                <summary>Source code in <code>CV_Promoter/cv_parsing.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CVParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The `CVParser` class in Python is designed to extract text from a CV document based on specified</span>
+<span class="sd">    sections and date ranges.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">start_year</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="n">cv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">present_year</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_year</span> <span class="o">=</span> <span class="n">start_year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">differential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_year</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_year</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">NIH_FUNDING_WINDOW</span>
+
+    <span class="k">def</span> <span class="nf">extract_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instructions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This Python function extracts text based on given instructions, including extracting text</span>
+<span class="sd">        between sections and after a specific section, with a fallback mechanism if no text is</span>
+<span class="sd">        extracted.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          instructions (Dict): The `instructions` parameter is expected to be a dictionary where the</span>
+<span class="sd">        keys represent different types of instructions and the values are the corresponding values for</span>
+<span class="sd">        those instructions. The function then processes these instructions to extract text based on the</span>
+<span class="sd">        specified criteria.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          The function `extract_text` returns a list of strings that have been extracted based on the</span>
+<span class="sd">        provided instructions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">instruction_type</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">instructions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;between&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span><span class="p">:</span>
+                <span class="n">start_section</span><span class="p">,</span> <span class="n">end_section</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">filter_years</span> <span class="o">=</span> <span class="s2">&quot;filter_years&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span>
+                <span class="n">extracted_text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_between_sections</span><span class="p">(</span><span class="n">start_section</span><span class="p">,</span> <span class="n">end_section</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;after&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span><span class="p">:</span>
+                <span class="n">filter_years</span> <span class="o">=</span> <span class="s2">&quot;filter_years&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span>
+                <span class="n">extracted_text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_after_section</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">extracted_text</span><span class="p">:</span>
+            <span class="c1"># Fallback mechanism</span>
+            <span class="n">extracted_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_after_section</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">extracted_text</span>
+
+    <span class="k">def</span> <span class="nf">extract_text_after_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function extracts text paragraphs following a specified section header, optionally filtering by</span>
+<span class="sd">        years.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          section_header (str): The `section_header` parameter is a string that represents the header of a</span>
+<span class="sd">        section in a document. The function `extract_text_after_section` uses this parameter to identify the</span>
+<span class="sd">        section in the document from which text needs to be extracted.</span>
+<span class="sd">          filter_years (bool): The `filter_years` parameter is a boolean flag that determines whether to</span>
+<span class="sd">        filter the extracted text based on years. If `filter_years` is set to `True`, the extracted text</span>
+<span class="sd">        will be filtered based on years. If it is set to `False`, no filtering based on years will be</span>
+<span class="sd">        applied.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          A list of strings containing text extracted from paragraphs in the CV document after the specified</span>
+<span class="sd">        section header, based on the provided conditions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_target_section</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">section_header</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">section_header</span><span class="p">):</span>
+                <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">is_target_section</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_include</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">):</span>
+                <span class="n">extracted_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">extracted_text</span>
+
+    <span class="k">def</span> <span class="nf">extract_text_between_sections</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">start_section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end_section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function extracts text between specified start and end sections in a document, optionally</span>
+<span class="sd">        filtering by years.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          start_section (str): The `start_section` parameter is a string that represents the section header</span>
+<span class="sd">        that marks the beginning of the text you want to extract from the document. It is used to identify</span>
+<span class="sd">        the starting point for extracting text between sections.</span>
+<span class="sd">          end_section (str): The `end_section` parameter is used to specify the section header that marks</span>
+<span class="sd">        the end of the text extraction process. When the code encounters this section header while iterating</span>
+<span class="sd">        through the paragraphs of the document, it stops extracting text and returns the collected text up</span>
+<span class="sd">        to that point.</span>
+<span class="sd">          filter_years (bool): The `filter_years` parameter is a boolean flag that determines whether the</span>
+<span class="sd">        extracted text should be filtered based on years. If `filter_years` is set to `True`, the extracted</span>
+<span class="sd">        text will be filtered based on some criteria related to years. If it is set to `False`, no filtering</span>
+<span class="sd">        based on</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          The function `extract_text_between_sections` returns a list of strings containing the text</span>
+<span class="sd">        paragraphs found between the start_section and end_section headers in the CV paragraphs, based on</span>
+<span class="sd">        the conditions specified by the `filter_years` parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">start_section</span><span class="p">):</span>
+                <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">end_section</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">is_target_section</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_include</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">):</span>
+                <span class="n">extracted_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">extracted_text</span>
+
+    <span class="k">def</span> <span class="nf">_is_section_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">section_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function checks if a given text is a section header by comparing it with a specified section</span>
+<span class="sd">        header string, ignoring case sensitivity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          text (str): The `text` parameter is a string that represents the text content that you want to</span>
+<span class="sd">        check for a section header. It is the text in which you want to search for the section header.</span>
+<span class="sd">          section_header (str): The `section_header` parameter is a string that represents the header of a</span>
+<span class="sd">        section in a text document. The `_is_section_header` method is used to check if a given text matches</span>
+<span class="sd">        the specified section header.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          The function is checking if the `text` string matches the `section_header` string exactly</span>
+<span class="sd">        (ignoring case) and returning a boolean value indicating whether there is a match or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;^</span><span class="si">{</span><span class="n">section_header</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_should_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function `_should_include` checks if a given text should be included based on specified</span>
+<span class="sd">        criteria, including filtering by years.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          text (str): The `text` parameter is a string that represents some information or content that</span>
+<span class="sd">        needs to be checked for inclusion based on certain conditions.</span>
+<span class="sd">          filter_years (bool): The `filter_years` parameter is a boolean flag that determines whether or not</span>
+<span class="sd">        to filter based on years. If `filter_years` is `True`, the function will check if the text contains</span>
+<span class="sd">        a date within a certain range or if it includes the words &quot;present&quot; or &quot;current&quot; in any case</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          a boolean value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">filter_years</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_date_in_range</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="s2">&quot;present&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="ow">or</span> <span class="s2">&quot;current&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_is_date_in_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function `is_date_in_range` checks if a given text contains a date within a specified range of</span>
+<span class="sd">        years, including the current year.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        text: The `text` parameter is a string that represents the text in which you want to search for</span>
+<span class="sd">        dates. It can contain any text, such as sentences, paragraphs, or even a whole document.</span>
+<span class="sd">        current_year: The current_year parameter represents the current year. It is used to determine the</span>
+<span class="sd">        range of valid years for the dates in the text.</span>
+<span class="sd">        year_differential: The `year_differential` parameter is an optional parameter that specifies the</span>
+<span class="sd">        range of years to consider as valid. By default, it is set to 11, which means that the function will</span>
+<span class="sd">        consider dates within the current year and the next 11 years as valid. For example, if the current</span>
+<span class="sd">        year. Defaults to 11</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        a boolean value indicating whether a valid date within the specified range is found in the given</span>
+<span class="sd">        text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define patterns for various date formats</span>
+        <span class="n">date_patterns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0?[1-9]|1[0-2])[-/–](0?[1-9]|[12]\d|3[01])[-/–](\d</span><span class="si">{2}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># MM/DD/YY with valid MM and DD</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0?[1-9]|1[0-2])[-/–](0?[1-9]|[12]\d|3[01])[-/–](\d</span><span class="si">{4}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># MM/DD/YYYY with valid MM and DD</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])[-/](\d</span><span class="si">{2}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># MM/DD/YY with valid MM and DD</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])[-/](\d</span><span class="si">{4}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># MM/DD/YYYY with valid MM and DD</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0[1-9]|1[0-2])[-/](\d</span><span class="si">{2}</span><span class="s2">)\b(?![-/]\d</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="p">,</span>  <span class="c1"># MM-YY with valid MM and not followed by another set of numbers</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(0[1-9]|1[0-2])[-/](\d</span><span class="si">{4}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># MM-YYYY with valid MM</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(\d</span><span class="si">{4}</span><span class="s2">)\b&quot;</span><span class="p">,</span>  <span class="c1"># YYYY</span>
+            <span class="sa">r</span><span class="s2">&quot;\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+(\d{2,4})\b&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="n">valid_dates_found</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">date_patterns</span><span class="p">:</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">year</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">year</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Get the last part which is likely the year</span>
+
+                <span class="c1"># If the year is a full date like &quot;March 29, 2023&quot;, extract just the year</span>
+                <span class="k">if</span> <span class="s2">&quot;,&quot;</span> <span class="ow">in</span> <span class="n">year</span><span class="p">:</span>
+                    <span class="n">year</span> <span class="o">=</span> <span class="n">year</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># If YY format, convert to YYYY</span>
+                    <span class="n">year</span> <span class="o">=</span> <span class="s2">&quot;20&quot;</span> <span class="o">+</span> <span class="n">year</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_year</span> <span class="o">%</span> <span class="mi">100</span> <span class="k">else</span> <span class="s2">&quot;19&quot;</span> <span class="o">+</span> <span class="n">year</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">present_year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">present_year</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">differential</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">valid_dates_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">valid_dates_found</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;present&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;current&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="CV_Promoter.cv_parsing.CVParser.extract_text" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extract_text</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>This Python function extracts text based on given instructions, including extracting text
+between sections and after a specific section, with a fallback mechanism if no text is
+extracted.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>instructions</code></b>
+                  (<code><span title="typing.Dict">Dict</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The <code>instructions</code> parameter is expected to be a dictionary where the</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>keys represent different types of instructions and the values are the corresponding values for
+those instructions. The function then processes these instructions to extract text based on the
+specified criteria.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="typing.List">List</span>[str]</code>
+              –
+              <div class="doc-md-description">
+                <p>The function <code>extract_text</code> returns a list of strings that have been extracted based on the</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>provided instructions.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>CV_Promoter/cv_parsing.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instructions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This Python function extracts text based on given instructions, including extracting text</span>
+<span class="sd">    between sections and after a specific section, with a fallback mechanism if no text is</span>
+<span class="sd">    extracted.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      instructions (Dict): The `instructions` parameter is expected to be a dictionary where the</span>
+<span class="sd">    keys represent different types of instructions and the values are the corresponding values for</span>
+<span class="sd">    those instructions. The function then processes these instructions to extract text based on the</span>
+<span class="sd">    specified criteria.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      The function `extract_text` returns a list of strings that have been extracted based on the</span>
+<span class="sd">    provided instructions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">instruction_type</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">instructions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;between&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span><span class="p">:</span>
+            <span class="n">start_section</span><span class="p">,</span> <span class="n">end_section</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">filter_years</span> <span class="o">=</span> <span class="s2">&quot;filter_years&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span>
+            <span class="n">extracted_text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_between_sections</span><span class="p">(</span><span class="n">start_section</span><span class="p">,</span> <span class="n">end_section</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;after&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span><span class="p">:</span>
+            <span class="n">filter_years</span> <span class="o">=</span> <span class="s2">&quot;filter_years&quot;</span> <span class="ow">in</span> <span class="n">instruction_type</span>
+            <span class="n">extracted_text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_after_section</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">extracted_text</span><span class="p">:</span>
+        <span class="c1"># Fallback mechanism</span>
+        <span class="n">extracted_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_text_after_section</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">extracted_text</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="CV_Promoter.cv_parsing.CVParser.extract_text_after_section" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extract_text_after_section</span><span class="p">(</span><span class="n">section_header</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>This function extracts text paragraphs following a specified section header, optionally filtering by
+years.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>section_header</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The <code>section_header</code> parameter is a string that represents the header of a</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>section in a document. The function <code>extract_text_after_section</code> uses this parameter to identify the
+section in the document from which text needs to be extracted.
+  filter_years (bool): The <code>filter_years</code> parameter is a boolean flag that determines whether to
+filter the extracted text based on years. If <code>filter_years</code> is set to <code>True</code>, the extracted text
+will be filtered based on years. If it is set to <code>False</code>, no filtering based on years will be
+applied.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="typing.List">List</span>[str]</code>
+              –
+              <div class="doc-md-description">
+                <p>A list of strings containing text extracted from paragraphs in the CV document after the specified</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>section header, based on the provided conditions.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>CV_Promoter/cv_parsing.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_text_after_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function extracts text paragraphs following a specified section header, optionally filtering by</span>
+<span class="sd">    years.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      section_header (str): The `section_header` parameter is a string that represents the header of a</span>
+<span class="sd">    section in a document. The function `extract_text_after_section` uses this parameter to identify the</span>
+<span class="sd">    section in the document from which text needs to be extracted.</span>
+<span class="sd">      filter_years (bool): The `filter_years` parameter is a boolean flag that determines whether to</span>
+<span class="sd">    filter the extracted text based on years. If `filter_years` is set to `True`, the extracted text</span>
+<span class="sd">    will be filtered based on years. If it is set to `False`, no filtering based on years will be</span>
+<span class="sd">    applied.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A list of strings containing text extracted from paragraphs in the CV document after the specified</span>
+<span class="sd">    section header, based on the provided conditions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_target_section</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">section_header</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">section_header</span><span class="p">):</span>
+            <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">is_target_section</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_include</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">):</span>
+            <span class="n">extracted_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">extracted_text</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="CV_Promoter.cv_parsing.CVParser.extract_text_between_sections" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extract_text_between_sections</span><span class="p">(</span><span class="n">start_section</span><span class="p">,</span> <span class="n">end_section</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>This function extracts text between specified start and end sections in a document, optionally
+filtering by years.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>start_section</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The <code>start_section</code> parameter is a string that represents the section header</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>that marks the beginning of the text you want to extract from the document. It is used to identify
+the starting point for extracting text between sections.
+  end_section (str): The <code>end_section</code> parameter is used to specify the section header that marks
+the end of the text extraction process. When the code encounters this section header while iterating
+through the paragraphs of the document, it stops extracting text and returns the collected text up
+to that point.
+  filter_years (bool): The <code>filter_years</code> parameter is a boolean flag that determines whether the
+extracted text should be filtered based on years. If <code>filter_years</code> is set to <code>True</code>, the extracted
+text will be filtered based on some criteria related to years. If it is set to <code>False</code>, no filtering
+based on</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="typing.List">List</span>[str]</code>
+              –
+              <div class="doc-md-description">
+                <p>The function <code>extract_text_between_sections</code> returns a list of strings containing the text</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <p>paragraphs found between the start_section and end_section headers in the CV paragraphs, based on
+the conditions specified by the <code>filter_years</code> parameter.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>CV_Promoter/cv_parsing.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_text_between_sections</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">start_section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end_section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function extracts text between specified start and end sections in a document, optionally</span>
+<span class="sd">    filtering by years.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      start_section (str): The `start_section` parameter is a string that represents the section header</span>
+<span class="sd">    that marks the beginning of the text you want to extract from the document. It is used to identify</span>
+<span class="sd">    the starting point for extracting text between sections.</span>
+<span class="sd">      end_section (str): The `end_section` parameter is used to specify the section header that marks</span>
+<span class="sd">    the end of the text extraction process. When the code encounters this section header while iterating</span>
+<span class="sd">    through the paragraphs of the document, it stops extracting text and returns the collected text up</span>
+<span class="sd">    to that point.</span>
+<span class="sd">      filter_years (bool): The `filter_years` parameter is a boolean flag that determines whether the</span>
+<span class="sd">    extracted text should be filtered based on years. If `filter_years` is set to `True`, the extracted</span>
+<span class="sd">    text will be filtered based on some criteria related to years. If it is set to `False`, no filtering</span>
+<span class="sd">    based on</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      The function `extract_text_between_sections` returns a list of strings containing the text</span>
+<span class="sd">    paragraphs found between the start_section and end_section headers in the CV paragraphs, based on</span>
+<span class="sd">    the conditions specified by the `filter_years` parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">extracted_text</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">start_section</span><span class="p">):</span>
+            <span class="n">is_target_section</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_section_header</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">end_section</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">is_target_section</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_include</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">filter_years</span><span class="p">):</span>
+            <span class="n">extracted_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">extracted_text</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../workflows/" class="btn btn-neutral float-left" title="workflows"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/UABPeriopAI/CV_Promoter" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../workflows/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

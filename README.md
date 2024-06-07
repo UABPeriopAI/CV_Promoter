@@ -1,6 +1,4 @@
-# CV_Promoter README
-=======
-# CV_Promoter
+# CV Promoter
 This application uses generative artificial intelligence (AI) to support academic faculty with tasks related to their Curriculum Vitae (CV).  Each tool in the software uses an uploaded CV to construct the pertinent documentation.
 
 ## Features

@@ -47,8 +47,8 @@ The user can then use the narrative portfolio, annual review preparation, or rec
 This application was designed for faculty at the University of Alabama at Birmingham and works best for CVs that are structured with that specific format.  The expected format is included below to facilitate users updating their CV to match or to facilitate modification of the code to adapt this structure to match that of their institution. 
 
 ## FORMAT FOR STANDARDIZED CURRICULUM VITAE
-### University of Alabama at Birmingham
-### School of Medicine Faculty
+### University 
+### School 
 Date:
 #### PERSONAL INFORMATION
 Name:

@@ -6,11 +6,16 @@ from langchain_community.callbacks import get_openai_callback
 from llm_utils.streamlit_common import hide_streamlit_branding
 from llm_utils.text_format import convert_markdown_docx
 
-# TODO fix streamlit implementation
-from CV_Promoter.workflows import AnnualReviewDrafter, NarrativePortfolioDrafter, RecommendationLetterDrafter
 import CV_Promoter_config.config as config
 import CV_Promoter_config.instructions_config as instructions_config
 import streamlit as st
+
+# TODO fix streamlit implementation
+from CV_Promoter.workflows import (
+    AnnualReviewDrafter,
+    NarrativePortfolioDrafter,
+    RecommendationLetterDrafter,
+)
 
 this_year = datetime.now().year
 
@@ -24,7 +29,7 @@ def show_CV_Promoter_page(template_location=config.TEMPLATE):
     The `show_CV_Promoter_page` function in Python creates a Streamlit page for users to upload a
     Curriculum Vitae in Word format and generate drafts for Promotion Portfolio, Annual Review, and
     Recommendation Letter based on the uploaded CV.
-    
+
     Args:
       template_location: The `template_location` parameter in the `show_CV_Promoter_page` function is
     used to specify the location of the template file that will be used for generating the output
@@ -54,9 +59,7 @@ def show_CV_Promoter_page(template_location=config.TEMPLATE):
     tab1, tab2, tab3 = st.tabs(["Promotion Portfolio", "Annual Review", "Recommendation Letter"])
 
     with tab2:
-        st.write(
-            "Assistant for preparing Annual Review forms."
-        )
+        st.write("Assistant for preparing Annual Review forms.")
         if uploaded_file is not None:
             cv_document = Document(uploaded_file)
             st.write("CV uploaded successfully!")
@@ -111,7 +114,9 @@ def show_CV_Promoter_page(template_location=config.TEMPLATE):
                         workflow = NarrativePortfolioDrafter(section_of_interest, selected_date, cv_document)
                         generated_response = workflow.process()
                         response_time = datetime.now()
-                        portfolio_docx_data = convert_markdown_docx(generated_response.content, template_location)
+                        portfolio_docx_data = convert_markdown_docx(
+                            generated_response.content, template_location
+                        )
 
                 if portfolio_docx_data:
                     st.balloons()
@@ -157,10 +162,14 @@ def show_CV_Promoter_page(template_location=config.TEMPLATE):
                 with st.spinner("Drafting. This may take a while..."):
                     with get_openai_callback() as response_meta:
                         submit_time = datetime.now()
-                        workflow = RecommendationLetterDrafter(areas_of_excellence, selected_date, cv_document)
+                        workflow = RecommendationLetterDrafter(
+                            areas_of_excellence, selected_date, cv_document
+                        )
                         generated_response = workflow.process()
                         response_time = datetime.now()
-                        portfolio_docx_data = convert_markdown_docx(generated_response.content, template_location)
+                        portfolio_docx_data = convert_markdown_docx(
+                            generated_response.content, template_location
+                        )
 
                 if portfolio_docx_data:
                     st.balloons()

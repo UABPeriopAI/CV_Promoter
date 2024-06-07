@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from datetime import datetime
-import streamlit as st
+
 from dateutil.relativedelta import relativedelta
 from llm_utils.api_utils.AugmentedResponse import SearchResponseHandler
 from llm_utils.api_utils.WorkflowHandler import WorkflowHandler
 
+import streamlit as st
 from CV_Promoter.cv_parsing import CVParser
 from CV_Promoter_config import api_config, instructions_config, prompt_config
 
@@ -93,7 +94,7 @@ class AnnualReviewDrafter(FormFiller):
 
     def __init__(self, focus_area: str, cv_document):
         self.focus_area = focus_area
-        print('focus area = ', self.focus_area)
+        print("focus area = ", self.focus_area)
         start_date = datetime.now() - relativedelta(years=1)
         super().__init__(
             start_date=start_date,

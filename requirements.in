@@ -13,3 +13,4 @@ python-docx
 pypandoc
 st_pages
 docx
+mkdocstrings[python]

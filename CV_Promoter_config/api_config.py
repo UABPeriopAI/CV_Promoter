@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from langchain.chat_models import ChatOpenAI
 from langchain_openai import AzureChatOpenAI
 
@@ -6,8 +7,8 @@ NAME = "cv"
 
 
 # END points
-AZURE_END_POINT = 'https://nlp-ai-svc.openai.azure.com'
-OPENAI_END_POINT = 'https://api.openai.com/v1/engines'
+AZURE_END_POINT = "https://nlp-ai-svc.openai.azure.com"
+OPENAI_END_POINT = "https://api.openai.com/v1/engines"
 
 REVIEW_TABLE_NAME = "review_drafter"
 NARRATIVE_TABLE_NAME = "narrative_drafter"
@@ -22,8 +23,4 @@ AZURE_CHAT_CONFIG = AzureChatOpenAI(
     model_name="gpt-4",
 )
 
-OPENAI_CHAT_CONFIG = ChatOpenAI(
-    temperature=0.5, 
-    model_name="gpt-3.5-turbo",
-    request_timeout=300
-)
+OPENAI_CHAT_CONFIG = ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo", request_timeout=300)

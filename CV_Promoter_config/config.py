@@ -17,4 +17,3 @@ INTERMEDIATE_DIR = Path(DATA_DIR, "intermediate")
 RESULTS_DIR = Path(DATA_DIR, "results")
 
 NIH_FUNDING_WINDOW = 11
-

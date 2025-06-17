@@ -205,7 +205,7 @@ platformdirs==4.2.2
     # via
     #   mkdocs-get-deps
     #   mkdocstrings
-protobuf==4.25.3
+protobuf==4.25.8
     # via streamlit
 pyarrow==16.1.0
     # via streamlit
